@@ -12,7 +12,7 @@ namespace ConsoleApp2
         static void Main(string[] args)
         {
             Student student = new Student();
-            ShowMessage method = Show;
+            Action<string> method = Show;
 
 
             student.Move(7, method);
@@ -29,7 +29,7 @@ namespace ConsoleApp2
 
         public class Student
         {
-            public void Move(int distance, ShowMessage method)
+            public void Move(int distance, Action<string> method)
             {
                 for (int i = 0; i <= distance; i++)
                 {
