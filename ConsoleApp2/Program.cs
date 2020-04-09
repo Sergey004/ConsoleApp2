@@ -12,12 +12,18 @@ namespace ConsoleApp2
         static void Main(string[] args)
         {
             Student student = new Student();
-            Action<string> method = Show;
+            //student.Moving  = Show;
+            student.Moving += Student_Moving;
 
-
-            student.Move(7, method);
+            student.Move(7);
 
         }
+
+        private static void Student_Moving(object sender, Student.MovimgEventArgs e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
         static void Show(string message)
         {
             Console.WriteLine(message);
@@ -29,15 +35,25 @@ namespace ConsoleApp2
 
         public class Student
         {
-            public void Move(int distance, Action<string> method)
+            public void Move(int distance)
             {
                 for (int i = 0; i <= distance; i++)
                 {
                     Thread.Sleep(1000);
-                    method(string.Format("Идеи перемещение... Пройдено километров {0}", i));
+                    if (Moving != null)
+                        Moving(this, new MovimgEventArgs(string.Format("Идеи перемещение... Пройдено километров {0}", i)));
                 }
             }
+            public event EventHandler<MovimgEventArgs> Moving;
 
-        }
+            public class MovimgEventArgs : EventArgs
+            {
+                public MovimgEventArgs(string message)
+                {
+                    Message = message;
+                }
+                public string Message { get; private set; }
+            }
+           }
     }
 }       
